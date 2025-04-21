@@ -12,10 +12,3 @@ docs/
 
 # Dotenv file
 .env
-
-lib/
-
-.github/
-.gitmodules/
-foundry.toml/
-broadcast/
