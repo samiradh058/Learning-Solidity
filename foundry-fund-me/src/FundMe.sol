@@ -1,7 +1,6 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.18;
 
-// Note: The AggregatorV3Interface might be at a different location than what was in the video!
 import {AggregatorV3Interface} from "@chainlink/contracts/src/v0.8/shared/interfaces/AggregatorV3Interface.sol";
 import {PriceConverter} from "./PriceConverter.sol";
 
@@ -58,12 +57,12 @@ contract FundMe {
             s_addressToAmountFunded[funder] = 0;
         }
         s_funders = new address[](0);
-        // // transfer
-        // payable(msg.sender).transfer(address(this).balance);
+        // transfer
+        payable(msg.sender).transfer(address(this).balance);
 
-        // // send
-        // bool sendSuccess = payable(msg.sender).send(address(this).balance);
-        // require(sendSuccess, "Send failed");
+        // send
+        bool sendSuccess = payable(msg.sender).send(address(this).balance);
+        require(sendSuccess, "Send failed");
 
         // call
         (bool callSuccess,) = payable(msg.sender).call{value: address(this).balance}("");

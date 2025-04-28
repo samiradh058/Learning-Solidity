@@ -64,3 +64,12 @@ $ forge --help
 $ anvil --help
 $ cast --help
 ```
+
+## 📚 Dependencies
+
+This project uses several external libraries managed by [Foundry](https://book.getfoundry.sh/). Dependencies are installed in the `lib/` folder but **are not pushed to version control** (see `.gitignore`).
+
+To install all required libraries after cloning this repo, run:
+
+```bash
+forge install
