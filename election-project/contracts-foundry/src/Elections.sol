@@ -1,12 +1,12 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.18;
 
-contract Elections{
+contract Elections {
     address public admin;
     uint public electionStart;
     uint public electionEnd;
     bool public electionEnded;
-    
+
     struct Candidate {
         uint id;
         string name;
@@ -55,6 +55,7 @@ contract Elections{
     }
 
     function approveCandidate(uint _candidateId) external onlyAdmin onlyBeforeEnd {
+        require(_candidateId < nextCandidateId, "Invalid candidate ID");
         candidates[_candidateId].approved = true;
         emit CandidateApproved(msg.sender, _candidateId);
     }
@@ -62,6 +63,7 @@ contract Elections{
     function vote(uint _candidateId) external duringElection onlyBeforeEnd {
         require(!hasVoted[msg.sender], "Already voted");
         require(candidates[_candidateId].approved, "Candidate not approved");
+        require(_candidateId < nextCandidateId, "Invalid candidate ID");
 
         hasVoted[msg.sender] = true;
         candidates[_candidateId].voteCount++;
@@ -73,7 +75,18 @@ contract Elections{
         emit ElectionEnded();
     }
 
-    function getCandidate(uint _candidateId) external view returns (Candidate memory) {
-        return candidates[_candidateId];
+    function getCandidate(uint _candidateId) external view returns (uint, string memory, uint, bool) {
+        require(_candidateId < nextCandidateId, "Invalid candidate ID");
+        Candidate memory c = candidates[_candidateId];
+        return (c.id, c.name, c.voteCount, c.approved);
+    }
+
+    // New function to return all candidates
+    function getAllCandidates() external view returns (Candidate[] memory) {
+        Candidate[] memory allCandidates = new Candidate[](nextCandidateId);
+        for (uint i = 0; i < nextCandidateId; i++) {
+            allCandidates[i] = candidates[i];
+        }
+        return allCandidates;
     }
 }
