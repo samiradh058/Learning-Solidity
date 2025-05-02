@@ -302,7 +302,6 @@ const ConnectMetaMask = () => {
 
     try {
       const allCandidates = await contract.getAllCandidates();
-      console.log("Fetched candidates:", allCandidates);
       setCandidates(allCandidates);
     } catch (error) {
       setError("Error fetching candidates: " + (error as any).message);
@@ -577,6 +576,7 @@ const ConnectMetaMask = () => {
       {error && (
         <p className="text-red-500 p-2 bg-red-100 rounded mb-4">{error}</p>
       )}
+
       {successMessage && (
         <p className="text-green-500 p-2 bg-green-100 rounded mb-4">
           {successMessage}
